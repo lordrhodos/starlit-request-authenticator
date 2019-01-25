@@ -2,6 +2,7 @@
     "name": "starweb/authenticator",
     "description": "Starweb Authenticator Library",
     "type": "library",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "Starweb AB",
