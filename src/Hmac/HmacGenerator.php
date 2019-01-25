@@ -6,8 +6,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class HmacGenerator
 {
-    public function generateHmac(string $secret, string $data, string $hashingAlgorithm = 'sha256'): string
-    {
+    // see https://secure.php.net/manual/en/function.hash-hmac-algos.php
+    private const DEFAULT_HASHING_ALGORITHM = 'sha256';
+
+    public function generateHmac(
+        string $secret,
+        string $data,
+        string $hashingAlgorithm = self::DEFAULT_HASHING_ALGORITHM
+    ): string {
         if (!$secret || !$data) {
             throw new \InvalidArgumentException('Parameters missing for MAC generation');
         }
