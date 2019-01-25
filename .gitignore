@@ -21,4 +21,4 @@ docker-hub.credentials.cnf
 data/logs
 .vscode
 
-.composer.lock
+composer.lock
