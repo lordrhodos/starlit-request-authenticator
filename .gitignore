@@ -1,0 +1,24 @@
+/vendor/
+.idea
+.env
+aws-deployment.env
+build/
+tests/coverage
+tests/log
+
+# ETC.
+*.chg
+*.conflict
+*.orig
+*.rej
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+desktop.ini
+nbproject/
+Thumbs.db
+docker-hub.credentials.cnf
+data/logs
+.vscode
+
+.composer.lock
