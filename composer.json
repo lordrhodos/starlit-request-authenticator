@@ -1,0 +1,28 @@
+{
+    "name": "starweb/authenticator",
+    "description": "Starweb Authenticator Library",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Starweb AB",
+            "email": "api@starweb.se"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.0",
+        "symfony/http-foundation": "^4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Starweb\\Authenticator\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Starweb\\Authenticator\\Tests\\": "tests"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    }
+}
