@@ -45,7 +45,7 @@ class HmacAuthenticatorTest extends TestCase
     /**
      * @covers \Starlit\Request\Authenticator\Hmac\HmacAuthenticator::authenticateRequest()
      */
-    public function testAuthenticateRequest()
+    public function testAuthenticateRequest(): void
     {
         $request = Request::create('/foo');
         $request->headers->add(['MAC' => '1ade58546c1bf2cec5b80cf75e48719a28d5e542d4582b62790d4827366826cc']);
@@ -55,7 +55,7 @@ class HmacAuthenticatorTest extends TestCase
     /**
      * @covers \Starlit\Request\Authenticator\Hmac\HmacAuthenticator::authenticateRequest()
      */
-    public function testAuthenticateRequestWithMissingMacHeader()
+    public function testAuthenticateRequestWithMissingMacHeader(): void
     {
         $request = Request::create('/foo');
         $this->assertFalse($this->authenticator->authenticateRequest($request));
