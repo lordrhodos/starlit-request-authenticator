@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Starweb\Authenticator\Hmac;
+namespace Starlit\Request\Authenticator\Hmac;
 
-use Starweb\Authenticator\AuthenticatorInterface;
+use Starlit\Request\Authenticator\AuthenticatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class HmacAuthenticator implements AuthenticatorInterface

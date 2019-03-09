@@ -14,12 +14,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Starweb\\Authenticator\\": "src"
+            "Starlit\\Request\\Authenticator\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Starweb\\Authenticator\\Tests\\": "tests"
+            "Starlit\\Request\\Authenticator\\Tests\\": "tests"
         }
     },
     "require-dev": {

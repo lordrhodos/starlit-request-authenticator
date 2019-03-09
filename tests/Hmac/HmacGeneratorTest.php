@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Starweb\Authenticator\Tests\Hmac;
+namespace Starlit\Request\Authenticator\Tests\Hmac;
 
 use PHPUnit\Framework\TestCase;
-use Starweb\Authenticator\Hmac\HmacGenerator;
+use Starlit\Request\Authenticator\Hmac\HmacGenerator;
 use Symfony\Component\HttpFoundation\Request;
 
 class HmacGeneratorTest extends TestCase
@@ -19,7 +19,7 @@ class HmacGeneratorTest extends TestCase
     }
 
     /**
-     * @covers \Starweb\Authenticator\Hmac\HmacGenerator::getDataStringFromRequest
+     * @covers \Starlit\Request\Authenticator\Hmac\HmacGenerator::getDataStringFromRequest
      */
     public function testGetDataStringFromRequest(): void
     {
@@ -31,7 +31,7 @@ class HmacGeneratorTest extends TestCase
     }
 
     /**
-     * @covers \Starweb\Authenticator\Hmac\HmacGenerator::generateHmac
+     * @covers \Starlit\Request\Authenticator\Hmac\HmacGenerator::generateHmac
      */
     public function testGenerateHmac(): void
     {
@@ -41,7 +41,7 @@ class HmacGeneratorTest extends TestCase
     }
 
     /**
-     * @covers \Starweb\Authenticator\Hmac\HmacGenerator::generateHmac
+     * @covers \Starlit\Request\Authenticator\Hmac\HmacGenerator::generateHmac
      */
     public function testGenerateHmacWithEmptySecretWillThrowException(): void
     {
@@ -51,7 +51,7 @@ class HmacGeneratorTest extends TestCase
     }
 
     /**
-     * @covers \Starweb\Authenticator\Hmac\HmacGenerator::generateHmac
+     * @covers \Starlit\Request\Authenticator\Hmac\HmacGenerator::generateHmac
      */
     public function testGenerateHmacWithEmptyDataWillThrowException(): void
     {
@@ -61,7 +61,7 @@ class HmacGeneratorTest extends TestCase
     }
 
     /**
-     * @covers \Starweb\Authenticator\Hmac\HmacGenerator::generateHmac
+     * @covers \Starlit\Request\Authenticator\Hmac\HmacGenerator::generateHmac
      */
     public function testGenerateHmacWithUnknownHashingAlgorithm(): void
     {
@@ -71,7 +71,7 @@ class HmacGeneratorTest extends TestCase
     }
 
     /**
-     * @covers \Starweb\Authenticator\Hmac\HmacGenerator::generateHmacForRequest
+     * @covers \Starlit\Request\Authenticator\Hmac\HmacGenerator::generateHmacForRequest
      */
     public function testGenerateHmacForRequest(): void
     {
@@ -82,8 +82,8 @@ class HmacGeneratorTest extends TestCase
     }
 
     /**
-     * @covers \Starweb\Authenticator\Hmac\HmacGenerator::generateHmacForRequest
-     * @covers \Starweb\Authenticator\Hmac\HmacGenerator::generateHmac
+     * @covers \Starlit\Request\Authenticator\Hmac\HmacGenerator::generateHmacForRequest
+     * @covers \Starlit\Request\Authenticator\Hmac\HmacGenerator::generateHmac
      */
     public function testGenerateHmacForRequestWithEmptySecretWillThrowException(): void
     {

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Starweb\Authenticator\Hmac;
+namespace Starlit\Request\Authenticator\Hmac;
 
 use Symfony\Component\HttpFoundation\Request;
 
