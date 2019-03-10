@@ -20,7 +20,7 @@ class HmacGenerator
 
     /**
      * Transforms a request into a data string used by the hash_mac function. The default transfomer builds the
-     * data string in the format "%method% %uri% %content%". Inject your own transformer if you want to support
+     * data string in the format "%method% %uri%\n%content%". Inject your own transformer if you want to support
      * a different data string.
      *
      * @var HmacDataTransformerInterface
