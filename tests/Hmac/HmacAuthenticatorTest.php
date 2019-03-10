@@ -17,10 +17,9 @@ class HmacAuthenticatorTest extends TestCase
 
     protected function setUp()
     {
-        $generator = new HmacGenerator();
-        $this->authenticator = new HmacAuthenticator('my secret key', $generator);
+        $generator = new HmacGenerator('my secret key');
+        $this->authenticator = new HmacAuthenticator($generator);
     }
-
 
     /**
      * @covers \Starlit\Request\Authenticator\Hmac\HmacAuthenticator::__construct()
@@ -31,21 +30,9 @@ class HmacAuthenticatorTest extends TestCase
     }
 
     /**
-     * @covers \Starlit\Request\Authenticator\Hmac\HmacAuthenticator::__construct()
-     */
-    public function testConstructorWithEmptyStringAsSecretThrowsException()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('invalid secret key');
-
-        $generator = new HmacGenerator();
-        new HmacAuthenticator('', $generator);
-    }
-
-    /**
      * @covers \Starlit\Request\Authenticator\Hmac\HmacAuthenticator::authenticateRequest()
      */
-    public function testAuthenticateRequest(): void
+    public function testAuthenticateSymfonyRequest(): void
     {
         $request = Request::create('/foo');
         $request->headers->add(['MAC' => '1ade58546c1bf2cec5b80cf75e48719a28d5e542d4582b62790d4827366826cc']);
