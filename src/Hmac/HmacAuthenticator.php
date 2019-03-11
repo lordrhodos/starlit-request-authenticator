@@ -3,7 +3,6 @@
 namespace Starlit\Request\Authenticator\Hmac;
 
 use Starlit\Request\Authenticator\AuthenticatorInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class HmacAuthenticator implements AuthenticatorInterface
 {
