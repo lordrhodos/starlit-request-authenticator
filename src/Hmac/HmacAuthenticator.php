@@ -3,6 +3,7 @@
 namespace Starlit\Request\Authenticator\Hmac;
 
 use Starlit\Request\Authenticator\AuthenticatorInterface;
+use Starlit\Request\Authenticator\Hmac\Adapter\RequestAdapterFactoryInterface;
 
 class HmacAuthenticator implements AuthenticatorInterface
 {
@@ -11,14 +12,21 @@ class HmacAuthenticator implements AuthenticatorInterface
      */
     private $generator;
 
-    public function __construct(HmacGenerator $generator)
+    /**
+     * @var RequestAdapterFactoryInterface
+     */
+    private $requestAdapterFactory;
+
+    public function __construct(HmacGenerator $generator, RequestAdapterFactoryInterface $requestAdapterFactory)
     {
         $this->generator = $generator;
+        $this->requestAdapterFactory = $requestAdapterFactory;
     }
 
     public function authenticateRequest($request): bool
     {
-        $receivedMac = $request->headers->get('MAC');
+        $request = $this->requestAdapterFactory->create($request);
+        $receivedMac = $request->getHeader('MAC');
         if (!$receivedMac) {
             return false;
         }

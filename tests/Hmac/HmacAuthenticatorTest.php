@@ -4,6 +4,7 @@ namespace Starlit\Request\Authenticator\Tests\Hmac;
 
 use PHPUnit\Framework\TestCase;
 use Starlit\Request\Authenticator\AuthenticatorInterface;
+use Starlit\Request\Authenticator\Hmac\Adapter\RequestAdapterFactory;
 use Starlit\Request\Authenticator\Hmac\HmacAuthenticator;
 use Starlit\Request\Authenticator\Hmac\HmacGenerator;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,8 @@ class HmacAuthenticatorTest extends TestCase
     protected function setUp()
     {
         $generator = new HmacGenerator('my secret key');
-        $this->authenticator = new HmacAuthenticator($generator);
+        $factory = new RequestAdapterFactory();
+        $this->authenticator = new HmacAuthenticator($generator, $factory);
     }
 
     /**

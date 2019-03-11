@@ -3,8 +3,9 @@
 namespace Starlit\Request\Authenticator\Tests\Hmac;
 
 use PHPUnit\Framework\TestCase;
+use Starlit\Request\Authenticator\Hmac\Adapter\SymfonyRequestAdapter;
 use Starlit\Request\Authenticator\Hmac\HmacGenerator;
-use Starlit\Request\Authenticator\Hmac\DataTransformer\RequestHmacDataTransformer;
+use Starlit\Request\Authenticator\Hmac\Transformer\RequestHmacDataTransformer;
 use Symfony\Component\HttpFoundation\Request;
 
 class HmacGeneratorTest extends TestCase
@@ -92,7 +93,7 @@ class HmacGeneratorTest extends TestCase
     public function testGenerateHmacForRequest(): void
     {
         $request = Request::create('/foo');
-        $hmac = $this->generator->generateHmacForRequest($request);
+        $hmac = $this->generator->generateHmacForRequest(new SymfonyRequestAdapter($request));
         $this->assertIsString($hmac);
         $this->assertSame('c38d090572c79b214a7165da2dec4be9cdd8acf607bbb950dba2ca5a24073358', $hmac);
     }
@@ -110,20 +111,8 @@ class HmacGeneratorTest extends TestCase
 
         $generator = new HmacGenerator('my secret', $hmacDataTransformerMock);
         $request = Request::create('/foo');
-        $hmac = $generator->generateHmacForRequest($request);
+        $hmac = $generator->generateHmacForRequest(new SymfonyRequestAdapter($request));
         $this->assertIsString($hmac);
         $this->assertSame('c38d090572c79b214a7165da2dec4be9cdd8acf607bbb950dba2ca5a24073358', $hmac);
-    }
-
-    /**
-     * @covers \Starlit\Request\Authenticator\Hmac\HmacGenerator::generateHmacForRequest
-     */
-    public function testGenerateHmacForRequestWithInvalidRequestWillThrowException(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Request type not supported. Only PSR-7, Symfony or Guzzle5 requests are supported'
-        );
-        $this->generator->generateHmacForRequest('/foo');
     }
 }

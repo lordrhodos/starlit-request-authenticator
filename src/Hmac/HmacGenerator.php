@@ -2,11 +2,9 @@
 
 namespace Starlit\Request\Authenticator\Hmac;
 
-use Psr\Http\Message\RequestInterface as Psr7Request;
-use Starlit\Request\Authenticator\Hmac\DataTransformer\HmacDataTransformerInterface;
-use Starlit\Request\Authenticator\Hmac\DataTransformer\RequestHmacDataTransformer;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use GuzzleHttp\Message\Request as Guzzle5Request;
+use Starlit\Request\Authenticator\Hmac\Adapter\RequestAdapterInterface;
+use Starlit\Request\Authenticator\Hmac\Transformer\HmacDataTransformerInterface;
+use Starlit\Request\Authenticator\Hmac\Transformer\RequestHmacDataTransformer;
 
 class HmacGenerator
 {
@@ -55,23 +53,8 @@ class HmacGenerator
         return $hmac;
     }
 
-    /**
-     * @param string $secret
-     * @param Psr7Request|SymfonyRequest|Guzzle5Request $request
-     *
-     * @return string
-     */
-    public function generateHmacForRequest($request): string
+    public function generateHmacForRequest(RequestAdapterInterface $request): string
     {
-        if (!$request instanceof Psr7Request
-            && !$request instanceof SymfonyRequest
-            && !$request instanceof Guzzle5Request
-        ) {
-            throw new \InvalidArgumentException(
-                'Request type not supported. Only PSR-7, Symfony or Guzzle5 requests are supported'
-            );
-        }
-
         $data = $this->hmacDataTransformer->getDataForRequest($request);
 
         return $this->generateHmac($data);
