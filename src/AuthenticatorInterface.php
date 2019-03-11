@@ -2,9 +2,7 @@
 
 namespace Starlit\Request\Authenticator;
 
-use Symfony\Component\HttpFoundation\Request;
-
 interface AuthenticatorInterface
 {
-    public function authenticateRequest(Request $request): bool;
+    public function authenticateRequest($request): bool;
 }
