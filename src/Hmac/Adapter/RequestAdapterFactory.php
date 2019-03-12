@@ -3,7 +3,7 @@
 namespace Starlit\Request\Authenticator\Hmac\Adapter;
 
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use GuzzleHttp\Psr7\Request as Psr7Request;
+use Psr\Http\Message\RequestInterface as Psr7Request;
 use GuzzleHttp\Message\Request as Guzzle5Request;
 
 class RequestAdapterFactory implements RequestAdapterFactoryInterface

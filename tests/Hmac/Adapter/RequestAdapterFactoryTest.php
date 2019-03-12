@@ -8,8 +8,8 @@ use Starlit\Request\Authenticator\Hmac\Adapter\Psr7RequestAdapter;
 use Starlit\Request\Authenticator\Hmac\Adapter\RequestAdapterFactory;
 use Starlit\Request\Authenticator\Hmac\Adapter\RequestAdapterInterface;
 use Starlit\Request\Authenticator\Hmac\Adapter\SymfonyRequestAdapter;
+use Starlit\Request\Authenticator\Tests\Mocks\Psr7Request;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use GuzzleHttp\Psr7\Request as Psr7Request;
 use GuzzleHttp\Message\Request as Guzzle5Request;
 
 class RequestAdapterFactoryTest extends TestCase
