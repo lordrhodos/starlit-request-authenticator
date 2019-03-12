@@ -1,12 +1,11 @@
 {
-    "name": "starweb/authenticator",
-    "description": "Starweb Authenticator Library",
-    "type": "library",
-    "version": "1.0.1",
+    "name": "starlit/request-authenticator",
+    "homepage": "http://github.com/starweb/starlit-request-authenticator",
+    "license": "BSD-3-Clause",
+    "version": "1.2.0",
     "authors": [
         {
-            "name": "Starweb AB",
-            "email": "api@starweb.se"
+            "name": "Starweb AB"
         }
     ],
     "require": {
@@ -15,12 +14,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Starweb\\Authenticator\\": "src"
+            "Starlit\\Request\\Authenticator\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Starweb\\Authenticator\\Tests\\": "tests"
+            "Starlit\\Request\\Authenticator\\Tests\\": "tests"
         }
     },
     "require-dev": {

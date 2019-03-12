@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Starweb\Authenticator;
+namespace Starlit\Request\Authenticator;
 
 use Symfony\Component\HttpFoundation\Request;
 
