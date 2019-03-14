@@ -3,38 +3,35 @@
 namespace Starlit\Request\Authenticator\Hmac;
 
 use Starlit\Request\Authenticator\AuthenticatorInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Starlit\Request\Authenticator\Hmac\Adapter\RequestAdapterFactoryInterface;
 
 class HmacAuthenticator implements AuthenticatorInterface
 {
-    /**
-     * @var string
-     */
-    private $secretKey;
-
     /**
      * @var HmacGenerator
      */
     private $generator;
 
-    public function __construct(string $secretKey, HmacGenerator $generator)
-    {
-        if (!$secretKey) {
-            throw new \InvalidArgumentException('invalid secret key');
-        }
+    /**
+     * @var RequestAdapterFactoryInterface
+     */
+    private $requestAdapterFactory;
 
-        $this->secretKey = $secretKey;
+    public function __construct(HmacGenerator $generator, RequestAdapterFactoryInterface $requestAdapterFactory)
+    {
         $this->generator = $generator;
+        $this->requestAdapterFactory = $requestAdapterFactory;
     }
 
-    public function authenticateRequest(Request $request): bool
+    public function authenticateRequest($request): bool
     {
-        $receivedMac = $request->headers->get('MAC');
+        $request = $this->requestAdapterFactory->create($request);
+        $receivedMac = $request->getHeader('MAC');
         if (!$receivedMac) {
             return false;
         }
 
-        $generatedMac = $this->generator->generateHmacForRequest($this->secretKey, $request);
+        $generatedMac = $this->generator->generateHmacForRequest($request);
 
         return ($receivedMac === $generatedMac);
     }
