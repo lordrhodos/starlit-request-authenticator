@@ -3,12 +3,14 @@
 namespace Starlit\Request\Authenticator\Tests\Hmac\Adapter;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UriInterface;
 use Starlit\Request\Authenticator\Hmac\Adapter\Guzzle5RequestAdapter;
 use Starlit\Request\Authenticator\Hmac\Adapter\Psr7RequestAdapter;
 use Starlit\Request\Authenticator\Hmac\Adapter\RequestAdapterFactory;
 use Starlit\Request\Authenticator\Hmac\Adapter\RequestAdapterInterface;
 use Starlit\Request\Authenticator\Hmac\Adapter\SymfonyRequestAdapter;
-use Starlit\Request\Authenticator\Tests\Mocks\Psr7Request;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use GuzzleHttp\Message\Request as Guzzle5Request;
 
@@ -29,8 +31,8 @@ class RequestAdapterFactoryTest extends TestCase
      */
     public function testCreatePsr7Request()
     {
-        $psr7Request = new Psr7Request('GET', '/foo');
-        $request = $this->factory->create($psr7Request);
+        $psr7RequestMock = $this->createMock(RequestInterface::class);
+        $request = $this->factory->create($psr7RequestMock);
 
         $this->assertInstanceOf(RequestAdapterInterface::class, $request);
         $this->assertInstanceOf(Psr7RequestAdapter::class, $request);

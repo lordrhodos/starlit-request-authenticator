@@ -3,9 +3,11 @@
 namespace Starlit\Request\Authenticator\Tests\Hmac\Adapter;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UriInterface;
 use Starlit\Request\Authenticator\Hmac\Adapter\Psr7RequestAdapter;
 use Starlit\Request\Authenticator\Hmac\Adapter\RequestAdapterInterface;
-use Starlit\Request\Authenticator\Tests\Mocks\Psr7Request;
 
 class Psr7RequestAdapterTest extends TestCase
 {
@@ -19,8 +21,36 @@ class Psr7RequestAdapterTest extends TestCase
     public function testAdaption()
     {
         $uri = 'http://foo.test/bar?paramB=b&paramA=a';
-        $psr7Request = new Psr7Request('GET', $uri);
-        $request = new Psr7RequestAdapter($psr7Request);
+
+        $psr7UriMock = $this->createMock(UriInterface::class);
+        $psr7UriMock
+            ->expects($this->once())
+            ->method('__toString')
+            ->willReturn($uri);
+
+        $psr7StreamMock = $this->createMock(StreamInterface::class);
+        $psr7StreamMock
+            ->expects($this->once())
+            ->method('__toString')
+            ->willReturn('');
+
+        $psr7RequestMock = $this->createMock(RequestInterface::class);
+        $psr7RequestMock
+            ->expects($this->once())
+            ->method('getMethod')
+            ->willReturn('GET');
+
+        $psr7RequestMock
+            ->expects($this->once())
+            ->method('getUri')
+            ->willReturn($psr7UriMock);
+
+        $psr7RequestMock
+            ->expects($this->once())
+            ->method('getBody')
+            ->willReturn($psr7StreamMock);
+
+        $request = new Psr7RequestAdapter($psr7RequestMock);
 
         $this->assertInstanceOf(RequestAdapterInterface::class, $request);
         $this->assertSame('GET', $request->getMethod());
