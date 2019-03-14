@@ -31,13 +31,13 @@ class SymfonyRequestAdapter implements RequestAdapterInterface
      */
     public function getUri(): string
     {
-        $qs = $this->request->server->get('QUERY_STRING');
-        if (!empty($qs)) {
-            $qs = '?' . $qs;
+        $queryString = $this->request->server->get('QUERY_STRING');
+        if (!empty($queryString)) {
+            $queryString = '?' . $queryString;
         }
 
         return $this->request->getSchemeAndHttpHost()
-            . $this->request->getBaseUrl() . $this->request->getPathInfo().$qs;
+            . $this->request->getBaseUrl() . $this->request->getPathInfo() . $queryString;
     }
 
     public function getContent(): string
