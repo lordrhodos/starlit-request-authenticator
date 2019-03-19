@@ -28,7 +28,7 @@ class SymfonyRequestAdapterTest extends TestCase
             $this->assertSame('', $request->getContent());
             $this->assertNull($request->getHeader('MAC'));
         } else {
-            $this->assertTrue(true, 'symfony/http-foundation library not loaded');
+            $this->assertTrue(true, 'symfony/http-foundation package not loaded');
         }
     }
 }
