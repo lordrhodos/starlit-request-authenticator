@@ -9,8 +9,6 @@ use Starlit\Request\Authenticator\Hmac\Adapter\Psr7RequestAdapter;
 use Starlit\Request\Authenticator\Hmac\Adapter\RequestAdapterFactory;
 use Starlit\Request\Authenticator\Hmac\Adapter\RequestAdapterInterface;
 use Starlit\Request\Authenticator\Hmac\Adapter\SymfonyRequestAdapter;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use GuzzleHttp\Message\Request as Guzzle5Request;
 
 class RequestAdapterFactoryTest extends TestCase
 {
@@ -41,9 +39,9 @@ class RequestAdapterFactoryTest extends TestCase
      */
     public function testCreateSymfonyRequest()
     {
-        if (class_exists('Symfony\Component\HttpFoundation\Request')) {
+        if (class_exists('\Symfony\Component\HttpFoundation\Request')) {
 
-            $symfonyRequest = new SymfonyRequest();
+            $symfonyRequest = new \Symfony\Component\HttpFoundation\Request();
             $request = $this->factory->create($symfonyRequest);
 
             $this->assertInstanceOf(RequestAdapterInterface::class, $request);
@@ -58,8 +56,8 @@ class RequestAdapterFactoryTest extends TestCase
      */
     public function testCreateGuzzle5Request()
     {
-        if (class_exists('Symfony\Component\HttpFoundation\Request')) {
-            $psr7Request = new Guzzle5Request('GET', '/foo');
+        if (class_exists('\GuzzleHttp\Message\Request')) {
+            $psr7Request = new \GuzzleHttp\Message\Request('GET', '/foo');
             $request = $this->factory->create($psr7Request);
 
             $this->assertInstanceOf(RequestAdapterInterface::class, $request);
