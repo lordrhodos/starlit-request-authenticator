@@ -1,10 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Starweb\Authenticator;
-
-use Symfony\Component\HttpFoundation\Request;
+namespace Starlit\Request\Authenticator;
 
 interface AuthenticatorInterface
 {
-    public function authenticateRequest(Request $request): bool;
+    public function authenticateRequest($request): bool;
 }

@@ -1,11 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Starweb\Authenticator\Tests\Hmac;
+namespace Starlit\Request\Authenticator\Tests\Hmac;
 
 use PHPUnit\Framework\TestCase;
-use Starweb\Authenticator\AuthenticatorInterface;
-use Starweb\Authenticator\Hmac\HmacAuthenticator;
-use Starweb\Authenticator\Hmac\HmacGenerator;
+use Starlit\Request\Authenticator\AuthenticatorInterface;
+use Starlit\Request\Authenticator\Hmac\Adapter\RequestAdapterFactory;
+use Starlit\Request\Authenticator\Hmac\HmacAuthenticator;
+use Starlit\Request\Authenticator\Hmac\HmacGenerator;
 use Symfony\Component\HttpFoundation\Request;
 
 class HmacAuthenticatorTest extends TestCase
@@ -17,13 +18,13 @@ class HmacAuthenticatorTest extends TestCase
 
     protected function setUp()
     {
-        $generator = new HmacGenerator();
-        $this->authenticator = new HmacAuthenticator('my secret key', $generator);
+        $generator = new HmacGenerator('my secret key');
+        $factory = new RequestAdapterFactory();
+        $this->authenticator = new HmacAuthenticator($generator, $factory);
     }
 
-
     /**
-     * @covers \Starweb\Authenticator\Hmac\HmacAuthenticator::__construct()
+     * @covers \Starlit\Request\Authenticator\Hmac\HmacAuthenticator::__construct()
      */
     public function testConstructor(): void
     {
@@ -31,21 +32,9 @@ class HmacAuthenticatorTest extends TestCase
     }
 
     /**
-     * @covers \Starweb\Authenticator\Hmac\HmacAuthenticator::__construct()
+     * @covers \Starlit\Request\Authenticator\Hmac\HmacAuthenticator::authenticateRequest()
      */
-    public function testConstructorWithEmptyStringAsSecretThrowsException()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('invalid secret key');
-
-        $generator = new HmacGenerator();
-        new HmacAuthenticator('', $generator);
-    }
-
-    /**
-     * @covers \Starweb\Authenticator\Hmac\HmacAuthenticator::authenticateRequest()
-     */
-    public function testAuthenticateRequest()
+    public function testAuthenticateSymfonyRequest(): void
     {
         $request = Request::create('/foo');
         $request->headers->add(['MAC' => '1ade58546c1bf2cec5b80cf75e48719a28d5e542d4582b62790d4827366826cc']);
@@ -53,9 +42,9 @@ class HmacAuthenticatorTest extends TestCase
     }
 
     /**
-     * @covers \Starweb\Authenticator\Hmac\HmacAuthenticator::authenticateRequest()
+     * @covers \Starlit\Request\Authenticator\Hmac\HmacAuthenticator::authenticateRequest()
      */
-    public function testAuthenticateRequestWithMissingMacHeader()
+    public function testAuthenticateRequestWithMissingMacHeader(): void
     {
         $request = Request::create('/foo');
         $this->assertFalse($this->authenticator->authenticateRequest($request));
