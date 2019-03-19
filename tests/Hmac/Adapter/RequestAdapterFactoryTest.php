@@ -4,8 +4,6 @@ namespace Starlit\Request\Authenticator\Tests\Hmac\Adapter;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\StreamInterface;
-use Psr\Http\Message\UriInterface;
 use Starlit\Request\Authenticator\Hmac\Adapter\Guzzle5RequestAdapter;
 use Starlit\Request\Authenticator\Hmac\Adapter\Psr7RequestAdapter;
 use Starlit\Request\Authenticator\Hmac\Adapter\RequestAdapterFactory;
@@ -43,11 +41,16 @@ class RequestAdapterFactoryTest extends TestCase
      */
     public function testCreateSymfonyRequest()
     {
-        $symfonyRequest = new SymfonyRequest();
-        $request = $this->factory->create($symfonyRequest);
+        if (class_exists('Symfony\Component\HttpFoundation\Request')) {
 
-        $this->assertInstanceOf(RequestAdapterInterface::class, $request);
-        $this->assertInstanceOf(SymfonyRequestAdapter::class, $request);
+            $symfonyRequest = new SymfonyRequest();
+            $request = $this->factory->create($symfonyRequest);
+
+            $this->assertInstanceOf(RequestAdapterInterface::class, $request);
+            $this->assertInstanceOf(SymfonyRequestAdapter::class, $request);
+        } else {
+            $this->assertTrue(true, 'symfony/http-foundation package not loaded');
+        }
     }
 
     /**
@@ -55,11 +58,15 @@ class RequestAdapterFactoryTest extends TestCase
      */
     public function testCreateGuzzle5Request()
     {
-        $psr7Request = new Guzzle5Request('GET', '/foo');
-        $request = $this->factory->create($psr7Request);
+        if (class_exists('Symfony\Component\HttpFoundation\Request')) {
+            $psr7Request = new Guzzle5Request('GET', '/foo');
+            $request = $this->factory->create($psr7Request);
 
-        $this->assertInstanceOf(RequestAdapterInterface::class, $request);
-        $this->assertInstanceOf(Guzzle5RequestAdapter::class, $request);
+            $this->assertInstanceOf(RequestAdapterInterface::class, $request);
+            $this->assertInstanceOf(Guzzle5RequestAdapter::class, $request);
+        } else {
+            $this->assertTrue(true, 'guzzlehttp/guzzle version 5 package not loaded');
+        }
     }
 
     /**
