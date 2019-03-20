@@ -2,9 +2,7 @@
 
 namespace Starlit\Request\Authenticator\Hmac\Adapter;
 
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Psr\Http\Message\RequestInterface as Psr7Request;
-use GuzzleHttp\Message\Request as Guzzle5Request;
 
 class RequestAdapterFactory implements RequestAdapterFactoryInterface
 {
@@ -12,10 +10,13 @@ class RequestAdapterFactory implements RequestAdapterFactoryInterface
     {
         if ($request instanceof Psr7Request) {
             return new Psr7RequestAdapter($request);
-        } elseif ($request instanceof SymfonyRequest) {
+        } elseif (class_exists('\Symfony\Component\HttpFoundation\Request')
+            && $request instanceof \Symfony\Component\HttpFoundation\Request)
+        {
             return new SymfonyRequestAdapter($request);
-        } elseif ($request instanceof Guzzle5Request) {
-            return new Guzzle5RequestAdapter($request);
+        } elseif (class_exists('\GuzzleHttp\Message\Request')
+            && $request instanceof \GuzzleHttp\Message\Request) {
+                return new Guzzle5RequestAdapter($request);
         } else {
             throw new \InvalidArgumentException(
                 'Request type not supported. Only PSR-7, Symfony or Guzzle5 requests are supported.'

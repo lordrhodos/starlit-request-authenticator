@@ -2,7 +2,6 @@
 
 namespace Starlit\Request\Authenticator\Tests\Hmac\Adapter;
 
-use GuzzleHttp\Message\Request;
 use PHPUnit\Framework\TestCase;
 use Starlit\Request\Authenticator\Hmac\Adapter\Guzzle5RequestAdapter;
 use Starlit\Request\Authenticator\Hmac\Adapter\RequestAdapterInterface;
@@ -18,14 +17,18 @@ class Guzzle5RequestAdapterTest extends TestCase
      */
     public function testAdaption()
     {
-        $uri = 'http://foo.test/bar?paramB=b&paramA=a';
-        $guzzle5Request = new Request('GET', $uri);
-        $request = new Guzzle5RequestAdapter($guzzle5Request);
+        if (class_exists('GuzzleHttp\Message\Request')) {
+            $uri = 'http://foo.test/bar?paramB=b&paramA=a';
+            $guzzle5Request = new \GuzzleHttp\Message\Request('GET', $uri);
+            $request = new Guzzle5RequestAdapter($guzzle5Request);
 
-        $this->assertInstanceOf(RequestAdapterInterface::class, $request);
-        $this->assertSame('GET', $request->getMethod());
-        $this->assertSame($uri, $request->getUri());
-        $this->assertSame('', $request->getContent());
-        $this->assertNull($request->getHeader('MAC'));
+            $this->assertInstanceOf(RequestAdapterInterface::class, $request);
+            $this->assertSame('GET', $request->getMethod());
+            $this->assertSame($uri, $request->getUri());
+            $this->assertSame('', $request->getContent());
+            $this->assertNull($request->getHeader('MAC'));
+        } else {
+            $this->assertTrue(true, 'guzzlehttp/guzzle version 5 package not loaded');
+        }
     }
 }

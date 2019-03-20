@@ -2,12 +2,12 @@
 
 namespace Starlit\Request\Authenticator\Tests\Hmac;
 
+use Nyholm\Psr7\Request;
 use PHPUnit\Framework\TestCase;
 use Starlit\Request\Authenticator\AuthenticatorInterface;
 use Starlit\Request\Authenticator\Hmac\Adapter\RequestAdapterFactory;
 use Starlit\Request\Authenticator\Hmac\HmacAuthenticator;
 use Starlit\Request\Authenticator\Hmac\HmacGenerator;
-use Symfony\Component\HttpFoundation\Request;
 
 class HmacAuthenticatorTest extends TestCase
 {
@@ -34,10 +34,10 @@ class HmacAuthenticatorTest extends TestCase
     /**
      * @covers \Starlit\Request\Authenticator\Hmac\HmacAuthenticator::authenticateRequest()
      */
-    public function testAuthenticateSymfonyRequest(): void
+    public function testAuthenticateRequest(): void
     {
-        $request = Request::create('/foo');
-        $request->headers->add(['MAC' => '1ade58546c1bf2cec5b80cf75e48719a28d5e542d4582b62790d4827366826cc']);
+        $request = new Request('GET', 'http://localhost/foo');
+        $request = $request->withHeader('MAC', '1ade58546c1bf2cec5b80cf75e48719a28d5e542d4582b62790d4827366826cc');
         $this->assertTrue($this->authenticator->authenticateRequest($request));
     }
 
@@ -46,7 +46,7 @@ class HmacAuthenticatorTest extends TestCase
      */
     public function testAuthenticateRequestWithMissingMacHeader(): void
     {
-        $request = Request::create('/foo');
+        $request = new Request('GET', 'http://localhost/foo');
         $this->assertFalse($this->authenticator->authenticateRequest($request));
     }
 }

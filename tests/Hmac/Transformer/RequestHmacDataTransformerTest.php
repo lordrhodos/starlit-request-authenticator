@@ -7,10 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Starlit\Request\Authenticator\Hmac\Adapter\RequestAdapterFactory;
 use Starlit\Request\Authenticator\Hmac\Transformer\HmacDataTransformerInterface;
 use Starlit\Request\Authenticator\Hmac\Transformer\RequestHmacDataTransformer;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use GuzzleHttp\Psr7\Request as Psr7Request;
-use GuzzleHttp\Message\Request as Guzzle5Request;
-
+use Nyholm\Psr7\Request as Psr7Request;
 
 class RequestHmacDataTransformerTest extends TestCase
 {
@@ -45,13 +42,26 @@ class RequestHmacDataTransformerTest extends TestCase
     {
         $uri = 'http://foobar.test/foo?param=value';
         $psr7Request = new Psr7Request('GET', $uri, [], 'bar');
-        $symfonyRequest = SymfonyRequest::create($uri, SymfonyRequest::METHOD_GET, [], [], [], [], 'bar');
-        $guzzle5Request = new Guzzle5Request('GET', $uri, [], Stream::factory('bar'));
+        $validRequests = [[$psr7Request]];
 
-        return [
-            [$psr7Request],
-            [$symfonyRequest],
-            [$guzzle5Request]
-        ];
+        if (class_exists('\Symfony\Component\HttpFoundation\Request')) {
+            $symfonyRequest = \Symfony\Component\HttpFoundation\Request::create(
+                $uri,
+                \Symfony\Component\HttpFoundation\Request::METHOD_GET,
+                [],
+                [],
+                [],
+                [],
+                'bar'
+            );
+            $validRequests[] = [$symfonyRequest];
+        }
+
+        if (class_exists('\GuzzleHttp\Message\Request')) {
+            $guzzle5Request = new \GuzzleHttp\Message\Request('GET', $uri, [], Stream::factory('bar'));
+            $validRequests[] = [$guzzle5Request];
+        }
+
+        return $validRequests;
     }
 }
