@@ -2,11 +2,12 @@
 
 namespace Starlit\Request\Authenticator\Tests\Hmac;
 
+use Nyholm\Psr7\Request;
 use PHPUnit\Framework\TestCase;
+use Starlit\Request\Authenticator\Hmac\Adapter\Psr7RequestAdapter;
 use Starlit\Request\Authenticator\Hmac\Adapter\SymfonyRequestAdapter;
 use Starlit\Request\Authenticator\Hmac\HmacGenerator;
 use Starlit\Request\Authenticator\Hmac\Transformer\RequestHmacDataTransformer;
-use Symfony\Component\HttpFoundation\Request;
 
 class HmacGeneratorTest extends TestCase
 {
@@ -92,8 +93,8 @@ class HmacGeneratorTest extends TestCase
      */
     public function testGenerateHmacForRequest(): void
     {
-        $request = Request::create('/foo');
-        $hmac = $this->generator->generateHmacForRequest(new SymfonyRequestAdapter($request));
+        $request = new Request('GET', 'http://localhost/foo');
+        $hmac = $this->generator->generateHmacForRequest(new Psr7RequestAdapter($request));
         $this->assertIsString($hmac);
         $this->assertSame('c38d090572c79b214a7165da2dec4be9cdd8acf607bbb950dba2ca5a24073358', $hmac);
     }
@@ -110,8 +111,8 @@ class HmacGeneratorTest extends TestCase
             ->willReturn("GET http://localhost/foo\n");
 
         $generator = new HmacGenerator('my secret', $hmacDataTransformerMock);
-        $request = Request::create('/foo');
-        $hmac = $generator->generateHmacForRequest(new SymfonyRequestAdapter($request));
+        $request = new Request('GET', 'http://localhost/foo');
+        $hmac = $generator->generateHmacForRequest(new Psr7RequestAdapter($request));
         $this->assertIsString($hmac);
         $this->assertSame('c38d090572c79b214a7165da2dec4be9cdd8acf607bbb950dba2ca5a24073358', $hmac);
     }
